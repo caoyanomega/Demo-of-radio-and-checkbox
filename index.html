@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>伪元素模拟checkButton</title>
+	<script src="./jquery.js"></script>
+	<style>
+		*{
+			margin:0;
+			padding:0;
+			box-sizing:border-box;
+			transition:1s;
+			-moz-transition:1s;	/* Firefox 4 */
+			-webkit-transition:1s;	/* Safari 和 Chrome */
+			-o-transition:1s;			
+		}
+		.radio-span{
+			/*按钮大小请在这里设置*/
+			position: relative;
+			display: inline-block;
+			vertical-align: middle;
+			border:1px solid black;
+			width: 32px;
+			height:32px;
+			border-radius: 50%;
+			text-align: center;
+			line-height: 30px;
+		}
+		.radio-span:before{
+			position:absolute;
+			left:0;/*根据伪元素的父类进行定位--这种定位非常精准*/
+			top:0;
+			right:0;
+			bottom:0;
+			margin:auto;
+			content:"";
+			width: 50%;
+			height: 50%;
+			border-radius: 50%;
+			background: black;
+		}		
+		.radio-span-checked:before{
+			border:1px solid black;
+			background: black;
+		}
+		.radio-span-unchecked:before{
+			border:1px solid #fff;
+			background: #fff;
+		}
+		.check-span{
+			/*按钮大小请在这里设置*/
+			position: relative;
+			display: inline-block;
+			vertical-align: middle;
+			border:2px solid black;
+			border-radius: 2px;
+			width: 32px;
+			height:32px;
+			text-align: center;
+			line-height: 28px;
+			font-size: 28px;
+			font-weight: 900;
+			font-style: normal;
+			cursor: pointer;
+		}
+		.check-span-checked{
+			color:#fff;
+			background: black;
+		}
+		.check-span-unchecked{
+			color:#fff;
+			background: #fff;
+		}
+		/*下面是模拟的switch*/
+		.switch-span-father{
+			cursor: pointer;
+			display: inline-block;
+			vertical-align: middle;
+			position: relative;
+			border:2px solid #1388ff;
+			height: 32px;
+			width: 64px;
+			border-radius: 16px;
+			background: #fff;
+		}
+		.switch-father-on{
+			background: #1388ff;
+		}
+		.switch-father-off{
+			background: #EAEAEA;	
+		}
+		.switch-span-son{
+			position: absolute;
+			height: 100%;
+			width: 50%;
+			border-radius: 16px;
+			box-shadow: 0 1px 1px rgba(0,0,0,.4);
+			-webkit-box-shadow: 0 1px 1px rgba(0,0,0,.4);
+		    -moz-box-shadow: 0 1px 1px rgba(0,0,0,.4);
+		    -ms-box-shadow: 0 1px 1px rgba(0,0,0,.4);
+		}
+		.switch-son-on{
+			right:0;
+			background: #fff;
+		}
+		.switch-son-off{
+			left: 0;
+			background: #fff;
+		}
+	</style>
+</head>
+<body>
+	<span class="radio-span radio-span-checked" name="123" value=""></span>
+	<span class="radio-span radio-span-unchecked" name="123" value=""></span>
+	<hr>
+	<input type="radio" name="   " id="">1
+	<input type="radio" name=" " id="">2
+	<input type="radio" name="" id="">3
+	<input type="radio" name="    " id="">4
+	<hr>
+	<hr>
+	<span class="check-span check-span-checked" name="123" value="" checked>√</span>12313<br>
+	<span class="check-span check-span-unchecked" name="123" value="">√</span><br>
+	<input type="checkbox" value="1" checked name="caoyan" id="">1
+	<input type="checkbox" value="2" name="caoyan" id="">2
+	<input type="checkbox" value="3" name="caoyan" id="">3
+	<hr>
+	下面是开关样式
+	<hr>
+		<span class="switch-span switch-span-father switch-father-on"><span class="switch-span-son switch-son-on"></span></span>
+		<span class="switch-span switch-span-father switch-father-off"><span class="switch-span-son switch-son-off"></span></span>
+	<hr>
+	<script>
+		$(function() {
+			(function(){
+				$("body").on("click",".radio-span",function(){
+					//第一步判断name==null时候的操作
+					if(!$(this).attr('name')){
+						if($(this).hasClass('radio-span-checked')){
+						}else{
+							$(this).removeClass('radio-span-unchecked').addClass('radio-span-checked');
+						}						
+					}else if($(this).attr('name') && $(".radio-span[name="+$(this).attr('name')+"]").length==1){
+						if($(this).hasClass('radio-span-checked')){
+						}else{
+							$(this).removeClass('radio-span-unchecked').addClass('radio-span-checked');
+						}	
+					}else{
+						$(".radio-span[name="+$(this).attr('name')+"]").removeClass('radio-span-checked').addClass('radio-span-unchecked');
+						$(this).removeClass('radio-span-unchecked').addClass('radio-span-checked');
+					}
+				});
+			})();
+		});
+	</script>
+	<script>
+		$(function() {
+			(function(){
+				$("body").on("click",".check-span",function(){
+					$(this).toggleClass('check-span-checked').toggleClass('check-span-unchecked');
+				});
+			})();
+
+			(function(){
+				$("body").on("click",".switch-span",function(){
+					$(this).toggleClass('switch-father-on').toggleClass('switch-father-off');
+					$(this).find(".switch-span-son").toggleClass('switch-son-on').toggleClass('switch-son-off');
+				});
+			})();
+		});
+	</script>
+</body>
+</html>
